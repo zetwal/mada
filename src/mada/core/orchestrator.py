@@ -397,6 +397,7 @@ class MADAOrchestrator(MCPAgentManager):
                     "Accept": "text/event-stream, application/json",
                     "Cache-Control": "no-cache",
                 }
+                headers.update(server_config.headers)
 
                 # Add bearer token if provided
                 if self.bearer_token:
@@ -405,7 +406,7 @@ class MADAOrchestrator(MCPAgentManager):
                 # MCPStreamableHTTPTool requires an http_client with custom headers, not a headers parameter
                 http_client = httpx2.AsyncClient(
                     headers=headers,
-                    timeout=180.0,
+                    timeout=server_config.timeout,
                     verify=resolve_httpx_verify_value(verify=server_config.verify),
                 )
                 http_client_to_cleanup = (
